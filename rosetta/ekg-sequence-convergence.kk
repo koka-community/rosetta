@@ -15,10 +15,10 @@ fun gcd( x : int, y : int ) {
 
 alias elem = int;
 
-ref type pad
+reference type pad
   Pad
 
-ref type unit2
+reference type unit2
   Unit2(a : pad, b : pad)
 
 type maybe2<a>
