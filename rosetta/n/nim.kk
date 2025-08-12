@@ -34,7 +34,7 @@ fun get-move(p: player, max-tokens: int, total-tokens: int, last-choice)
           Nothing -> println("Input not a number")
       valid
 
-pub fun main()
+pub fun analyze-game()
   var tokens := 12
   var player := Human
   var last-choice := 0
@@ -50,3 +50,5 @@ pub fun main()
         resume(())
   while {True}
     move()
+
+fun result-game() ()
