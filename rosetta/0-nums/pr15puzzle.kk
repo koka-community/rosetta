@@ -59,18 +59,18 @@ fun setup(size: (int, int)): <exn,random> board
     game := game.update(random-move())
   game
 
-effect break<a>
-  final ctl break(a: a) : b
+effect ebreak<a>
+  final ctl ebreak(a: a) : b
 
 fun finished(game: board): exn bool
   val (w, h) = game.size
   var i := 1
-  with final ctl break(a:bool)
+  with final ctl ebreak(a:bool)
     a
   for(0,w - 1) fn(x)
     for(0,h - 1) fn(y)
       if game.cells[x][y] != i then
-        break(False)
+        ebreak(False)
       else
         i := i + 1
   True
@@ -88,19 +88,19 @@ fun display(game: board): <console,exn> ()
     println("")
   println("")
 
-fun get_move(): <div,console,exn,break<string>> move
+fun get_move(): <div,console,exn,ebreak<string>> move
   val c = readline()
   match c.trim()
     "w" -> MUp
     "s" -> MDown
     "a" -> MLeft
     "d" -> MRight
-    "q" -> break("Finished")
+    "q" -> ebreak("Finished")
     _ -> get_move()
 
 fun main()
   var game := setup((4, 4))
-  with final ctl break(a:string)
+  with final ctl ebreak(a:string)
     a.println
   while {!game.finished}
     game.display

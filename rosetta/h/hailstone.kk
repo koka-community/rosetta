@@ -7,10 +7,10 @@
 ----------------------------------------------------------------------------*/
 
 fun hailstone(n, s)
-  if n == 1 then s ++ ctx Cons(n, _)
+  if n == 1 then s ++ ctx Cons(n, hole)
   else
     val next = if n % 2 == 1 then 3 * n + 1 else n / 2 
-    hailstone(next, s ++ ctx Cons(n, _))
+    hailstone(next, s ++ ctx Cons(n, hole))
 
 fun hailstone_length(n)
   if n == 1 then 1
@@ -30,7 +30,7 @@ fun main()
   val n = 1000000
   val (i, len) = hailstone_max(list(1, 99999))
   println("The longest hailstone sequence starting with a number up to " ++ n.show ++ " is " ++ i.show ++ " which is " ++ len.show ++ " elements long.")
-  val h27 = hailstone(27, ctx _) ++. Nil
+  val h27 = hailstone(27, ctx hole) ++. Nil
   val l = h27.length
   println("Hailstone 27 has length " ++ l.show)
   println("Hailstone 27 starts with:")

@@ -101,19 +101,10 @@ fun ekg(limit: int, seen: ctx<list<int>>, last: int, iter: int = 1): div list<in
         res := Just(v)
       else
         v := v + 1
-    ekg(limit, seen ++ ctx Cons(v, _), last=v, iter=iter+1)
+    ekg(limit, seen ++ ctx Cons(v, hole), last=v, iter=iter+1)
 
 fun doEkg(n: int, limit: int): <div> list<int>
-  Cons(1, ekg(limit, ctx Cons(n, _), n, 1))
-
-fun (==)( ids1 : list<int>, ids2 : list<int> ) : bool
-  match ids1
-    Nil -> match ids2
-      Nil -> True
-      Cons(_,_) -> False
-    Cons(i1,is1) -> match(ids2)
-      Cons(i2,is2) -> (i1 == i2 && is1 == is2)
-      Nil -> False
+  Cons(1, ekg(limit, ctx Cons(n, hole), n, 1))
 
 fun converged(i: int, l1: list<int>, l2: list<int>, l1acc : list<int>, l2acc : list<int>): pure maybe<int>
   match (l1, l2)

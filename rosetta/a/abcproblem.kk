@@ -29,14 +29,14 @@ val blocks = [("B", "O"),
 
 pub fun get-remove( xs : list<a>, pred : a -> bool, acc: ctx<list<a>>) : (maybe<a>, list<a>)
   match xs
-    Cons(x,xx) -> if !pred(x) then xx.get-remove(pred, acc ++ ctx Cons(x, _)) else (Just(x), acc ++. xx)
+    Cons(x,xx) -> if !pred(x) then xx.get-remove(pred, acc ++ ctx Cons(x, hole)) else (Just(x), acc ++. xx)
     Nil -> (Nothing, acc ++. Nil)
 
 fun check-word(word: string, blocks: list<(string, string)>)
   match word.head
     "" -> True
     x -> 
-      val (a, l) = blocks.get-remove(fn(a) a.fst == x || a.snd == x, ctx _)
+      val (a, l) = blocks.get-remove(fn(a) a.fst == x || a.snd == x, ctx hole)
       match a
         Nothing -> False
         Just(_) -> check-word(word.tail, l)
