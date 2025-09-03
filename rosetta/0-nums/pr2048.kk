@@ -60,15 +60,6 @@ fun up(l)
 fun down(l)
   l.rows.transpose.map(hitBack).transpose.concat
 
-fun (==)(l1: list<int>, l2: list<int>): bool
-  match l1
-    Cons(a, b) -> match l2
-      Cons(c, d) -> a == c && b == d
-      Nil -> False
-    Nil -> match l2
-      Cons -> False
-      Nil -> True
-
 fun lose(l)
   l.left == l && l.right == l && l.up == l && l.down == l
 

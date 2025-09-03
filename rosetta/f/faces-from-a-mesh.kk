@@ -7,7 +7,9 @@
 ----------------------------------------------------------------------------*/
 
 alias perimeter = list<int>
-alias face = (char, perimeter)
+struct face 
+  side: char
+  peri: perimeter
 alias edge = (int, int)
 
 fun isSame(p1: perimeter, p2: perimeter, noSwitch: list<int> = []): div bool
@@ -21,7 +23,7 @@ fun isSame(p1: perimeter, p2: perimeter, noSwitch: list<int> = []): div bool
           if noSwitch.any(fn(x') x' == x2) then False else p1.isSame(xs2 ++ [x2], Cons(x2, noSwitch))
 
 fun show(f: face)
-  val (c, p) = f
+  val Face(c, p) = f
   c.show ++ " " ++ p.show
 
 fun findRemove(l: list<a>, acc: ctx<list<a>>, pred: (a) -> bool): maybe<(a, list<a>)>
@@ -29,16 +31,16 @@ fun findRemove(l: list<a>, acc: ctx<list<a>>, pred: (a) -> bool): maybe<(a, list
     [] -> Nothing
     Cons(x, xs) -> match pred(x)
       True -> Just((x, acc ++. xs))
-      False -> findRemove(xs, acc ++ ctx Cons(x, _), pred)
+      False -> findRemove(xs, acc ++ ctx Cons(x, hole), pred)
 
 fun toPerimeter(search: int, edges: list<edge>, acc: ctx<perimeter>): <div,exn> perimeter
   match edges
     [] -> acc ++. Cons(search, Nil) // Assume the search matches the first edge's missing
-    _ -> match edges.findRemove(ctx _, fn((a, b)) a == search || b == search)
+    _ -> match edges.findRemove(ctx hole, fn((a, b)) a == search || b == search)
       Just(((a, b), xs')) -> if search == a then 
-          toPerimeter(b, xs', acc ++ ctx Cons(a, _))
+          toPerimeter(b, xs', acc ++ ctx Cons(a, hole))
         else 
-          toPerimeter(a, xs', acc ++ ctx Cons(b, _))
+          toPerimeter(a, xs', acc ++ ctx Cons(b, hole))
       Nothing -> throw("Cannot find the next edge for " ++ search.show ++ " current perimeter is " ++ (acc ++. Nil).show ++ " and the rest of the edges are: " ++ edges.show-list(fn(s) s.show-tuple(show, show)))
 
 fun main()
@@ -55,5 +57,5 @@ fun main()
     match edges
       [] -> ()
       Cons((initX, _), edges') ->
-        val p = toPerimeter(initX, edges', ctx _)
+        val p = toPerimeter(initX, edges', ctx hole)
         print(f.show ++ " perimeter is " ++ p.show ++ "\n")
